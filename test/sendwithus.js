@@ -200,6 +200,29 @@ module.exports.customers = {
       test.done();
     });
   },
+  getNoExist: function (test) {
+    var that = this;
+    that.sendwithus.customersGet(that.customerData.email, function (err, result) {
+      test.ifError(err);
+      test.ok(result.success, 'Response was successful');
+      test.done();
+    });
+  },
+  get: function (test) {
+    // Make sure customer exists
+    var that = this;
+    this.sendwithus.customersUpdateOrCreate(this.customerData, function (err, result) {
+      test.ifError(err);
+      test.ok(result.success, 'Response was successful');
+
+      // Get the customer
+      that.sendwithus.customersGet(that.customerData.email, function (err, result) {
+        test.ifError(err);
+        test.ok(result.success, 'Response was successful');
+        test.done();
+      });
+    });
+  },
   del: function (test) {
     // Make sure customer exists
     var that = this;
